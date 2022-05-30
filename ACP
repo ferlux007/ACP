@@ -1,60 +1,60 @@
-#https://github.com/cosmoduende/r-marvel-vs-dc
+
 
 library(readxl)
-base_datos <- read_excel("C:/Users/pable/Desktop/You tube/Marvel-DC/base datos.xlsx")
+base_datos <- read_excel("/users/ferlux/desktop/TEC ITESM/LIT/CRIT1.xlsx")
 View(base_datos)
 
-respca<-prcomp(base_datos, scale = TRUE)
+pcacrit<-prcomp(base_datos, scale = TRUE)
 
-library(textshape)
+#library(textshape)
 
-base_datos<- base_datos[!duplicated(base_datos$Name), ]
-base_datos<-textshape::column_to_rownames(base_datos, loc = 1)
+#base_datos<- base_datos[!duplicated(base_datos$Name), ]
+#base_datos<-textshape::column_to_rownames(base_datos, loc = 1)
 
 df<-as.data.frame(base_datos)
-df <- subset(df, select = -c(Alignment,Total) )
+#df <- subset(df, select = -c(Alignment,Total) )
 View(df)
 
 library(stats)
 #prcomp() Forma rápida de implementar PCA sobre una matriz de datos.
-respca<-prcomp(df, scale = TRUE)
+pcacrit<-prcomp(df, scale = TRUE)
 
-names(respca)
+names(pcacrit)
 
-head(respca$rotation)[, 1:5] #las coordenadas de los datos en el nuevo sistema rotado de coordenadas. 
+head(pcacrit1$rotation)[, 1:5] #las coordenadas de los datos en el nuevo sistema rotado de coordenadas. 
                               #Estas coordenadas se corresponden con los scores de los componentes principales.
 
-dim(respca$rotation) #Número de distintos componentes
+dim(pcacrit1$rotation) #Número de distintos componentes
 
-head(respca$x)[,1:5] #los vectores de los scores.
+head(pcacrit1$x)[,1:5] #los vectores de los scores.
 
-respca$sdev #las desviaciones estándares de cada CP.
+pcacrit1$sdev #las desviaciones estándares de cada CP.
 
-respca$sdev^2  ## Varianza explicada por cada componente
+pcacrit1$sdev^2  ## Varianza explicada por cada componente
 
-summary(respca)
+summary(pcacrit1)
 
 #comprobemos la importancia del componente 1
 xx<-respca$x
 xx<-as.data.frame(xx)
 base_datos$PC1<-xx$PC1
 base_datos$PC2<-xx$PC2
-base_datoscor <- subset(base_datos, select = -c(Alignment))
+#base_datoscor <- subset(base_datos, select = -c(Alignment))
 head(base_datoscor)
 cor(base_datoscor)
 #otra función
 #princomp() 
 
-respca1 <- princomp(df, cor = TRUE)
+pcacrit2 <- princomp(df, cor = TRUE)
 
-#respca1 <- princomp(~ Speed + Power,
+#pcacrit2 <- princomp(~ Speed + Power,
 #                  data = df, na.action = na.exclude, cor = TRUE)
 
-names(respca1)
+names(pcacrit2)
 
-respca1$sdev
+pcacrit2$sdev
 
-summary(respca1)
+summary(pcacrit2)
 
 library(FactoMineR)
 
@@ -62,63 +62,65 @@ library(FactoMineR)
       #Pueden incluirse variables categóricas suplementarias. Estandariza automáticamente los datos.
 
 
-respca2 <- PCA(X = df, scale.unit = FALSE, ncp = 6, graph = TRUE)
+pcacrit2 <- PCA(X = df, scale.unit = FALSE, ncp = 6, graph = TRUE)
 
-print(respca2)
+print(pcacrit2)
 
 
-head(respca2$eig) #como ejemplo
+head(pcacrit2$eig) #como ejemplo
 
 
 library(factoextra)
 
-get_pca(respca2) #Extrae la información sobre las variables.
+get_pca(pcacrit2) #Extrae la información sobre las variables.
 
-get_pca_var(respca2) #Extrae la información sobre las variables.
+get_pca_var(pcacrit2) #Extrae la información sobre las variables.
 
-get_pca_ind(respca2) #Extrae la información sobre las observaciones.
+get_pca_ind(pcacrit2) #Extrae la información sobre las observaciones.
 
 
 #visualización
 
-fviz_eig(respca2) #visualizar eigenvalores (scree plot)
+fviz_eig(pcacrit2) #visualizar eigenvalores (scree plot)
 
-fviz_screeplot(respca2) #visualizar eigenvalores (scree plot)
+fviz_screeplot(pcacrit2) #visualizar eigenvalores (scree plot)
 
-fviz_pca_ind(respca2) #Representación de observaciones sobre componentes principales.
+fviz_pca_ind(pcacrit2) #Representación de observaciones sobre componentes principales.
 
-fviz_pca_ind(respca2,
-             col.ind = "cos2", # Color by the quality of representation
+fviz_pca_ind(pcacrit2,
+             col.ind = "cos2", # Color por calidad de representación 
              gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
-             repel = FALSE     # Avoid text overlapping
+             repel = FALSE     # evitar traslape de texto
 )
 
-fviz_pca_var(respca2) #Representación de variables sobre componentes principales.
+fviz_pca_var(pcacrit2) #Representación de variables sobre componentes principales.
 
-fviz_pca_var(respca2,
-             col.var = "contrib", # Color by contributions to the PC
+fviz_pca_var(pcacrit2,
+             col.var = "contrib", # Color por contribución a pc
              gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
-             repel = TRUE     # Avoid text overlapping
+             repel = TRUE     # evitar traslape de texto
 )
 
-fviz_pca_var(respca2, col.var = "cos2", 
+fviz_pca_var(pcacrit2, col.var = "cos2", 
              geom.var = "arrow", 
              labelsize = 2, 
              repel = FALSE)
+             
+             
 #mil ejemplos de como visualizar aquí:
 #http://www.sthda.com/english/wiki/fviz-pca-quick-principal-component-analysis-data-visualization-r-software-and-data-mining
 
-fviz_contrib(respca2,choice = "var") #Representa la contribución de filas/columnas de los resultados de un pca.
-fviz_contrib(respca2,choice = "ind")
+fviz_contrib(pcacrit2,choice = "var") #Representa la contribución de filas/columnas de los resultados de un pca.
+fviz_contrib(pcacrit2,choice = "ind")
 
-biplot(x = respca1, scale = 0, cex = 0.6, col = c("blue4", "brown3"))
+biplot(x = pcacrit2, scale = 0, cex = 0.6, col = c("blue4", "brown3"))
 
-fviz_pca_biplot(respca1, repel = FALSE,
+fviz_pca_biplot(pcacrit2, repel = FALSE,
                 col.var = "#2E9FDF", # Variables color
                 col.ind = "#696969"  # Individuals color
 )
-
-fviz_pca_biplot(respca1, repel = TRUE,
+  
+fviz_pca_biplot(pcacrit2, repel = TRUE,
                 #geom= "point", #o text o geom=c("point", "text")
                 col.var = "#2E9FDF", # Variables color
                 col.ind = "#696969", # Individuals color
