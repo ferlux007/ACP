@@ -35,7 +35,7 @@ pcacrit1$sdev^2  ## Varianza explicada por cada componente
 summary(pcacrit1)
 
 #comprobemos la importancia del componente 1
-xx<-respca$x
+xx<-pcacrit1$x
 xx<-as.data.frame(xx)
 base_datos$PC1<-xx$PC1
 base_datos$PC2<-xx$PC2
